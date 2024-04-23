@@ -1,55 +1,61 @@
 #ifndef NEURAL_NETWORK_ACTIVATIONFUNCTION_H
 #define NEURAL_NETWORK_ACTIVATIONFUNCTION_H
 
-#include "../eigen/Eigen/Dense"
+#include "Eigen/Dense"
 #include <cmath>
 
-using Eigen::Matrix;
-using Eigen::MatrixXd;
+using MatrixXd = Eigen::MatrixXd;
 
-class ActivationFunction {
-public:
-    ActivationFunction(std::function<float(float)> f1, std::function<float(float)> f2)
-        : apply_(f1), derivative_(f2) {
-    }
+namespace activation_function {
 
-    MatrixXd Apply(MatrixXd x);
+    using FuncApply = std::function<double(double)>;
+    using FuncDerivative = std::function<double(double)>;
 
-    MatrixXd Derivative(MatrixXd x);
+    class ActivationFunction {
+    public:
+        ActivationFunction(FuncApply f1, FuncDerivative f2);
 
-private:
-    std::function<float(float)> apply_;
-    std::function<float(float)> derivative_;
-};
+        MatrixXd Apply(MatrixXd &x);
 
-class Sigmoid {
-public:
-    double Apply(double x);
+        MatrixXd Derivative(MatrixXd &x);
 
-    double Derivative(double x);
-};
+    private:
+        std::function<double(double)> apply_;
+        std::function<double(double)> derivative_;
+    };
 
-class Tanh {
-public:
-    double Apply(double x);
+    class Sigmoid {
+    public:
+        static double Apply(double x);
 
-    double Derivative(double x);
-};
+        static double Derivative(double x);
+    };
 
-class ReLU {
-public:
-    double Apply(double x);
+    class Tanh {
+    public:
+        static double Apply(double x);
 
-    double Derivative(double x);
-};
+        static double Derivative(double x);
+    };
 
-class LeakyReLU {
-public:
-    double Apply(double x);
+    class ReLU {
+    public:
+        static double Apply(double x);
 
-    double Derivative(double x);
-};
+        static double Derivative(double x);
+    };
 
-/// TODO: softmax?
+    class LeakyReLU {
+    public:
+        static double Apply(double x);
+
+        static double Derivative(double x);
+
+    private:
+        constexpr static const double leaky = 0.01;
+    };
+
+    /// TODO: softmax?
+}
 
 #endif  // NEURAL_NETWORK_ACTIVATIONFUNCTION_H

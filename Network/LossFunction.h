@@ -1,35 +1,39 @@
 #ifndef NEURAL_NETWORK_LOSSFUNCTION_H
 #define NEURAL_NETWORK_LOSSFUNCTION_H
 
-#include "../eigen/Eigen/Dense"
+#include "Eigen/Dense"
 
-using Eigen::Matrix;
-using Eigen::MatrixXd;
+namespace loss_function {
+    using MatrixXd = Eigen::MatrixXd;
+    using FuncDist = std::function<double(const MatrixXd &, const MatrixXd &)>;
+    using FuncU = std::function<MatrixXd(const MatrixXd &, const MatrixXd &)>;
 
-class LossFunction {
-public:
-    LossFunction();
 
-    double Dist(MatrixXd x, MatrixXd y);
+    class LossFunction {
+    public:
+        LossFunction(FuncDist f1, FuncU f2);
 
-    MatrixXd FirstU(MatrixXd x, MatrixXd y);  // d(dist(x, y))/dx
-private:
-    std::function<double(MatrixXd, MatrixXd)> dist_;
-    std::function<MatrixXd(MatrixXd, MatrixXd)> u_;
-};
+        const double Dist(const MatrixXd &x, const MatrixXd &y);
 
-class MSE {
-public:
-    double Dist(MatrixXd x, MatrixXd y);
+        const MatrixXd FirstU(const MatrixXd &x, const MatrixXd &y);// d(dist(x, y))/dx
 
-    MatrixXd FirstU(MatrixXd x, MatrixXd y);
-};
+    private:
+        FuncDist dist_;
+        FuncU u_;
+    };
 
-class BCELoss {
-public:
-    double Dist(MatrixXd x, MatrixXd y);
+    class MSE {
+    public:
+        static double Dist(const MatrixXd &x, const MatrixXd &y);
 
-    MatrixXd FirstU(MatrixXd x, MatrixXd y);
-};
+        static MatrixXd FirstU(const MatrixXd &x, const MatrixXd &y);
+    };
 
+    class BCELoss {
+    public:
+        static double Dist(const MatrixXd &x, const MatrixXd &y);
+
+        static MatrixXd FirstU(const MatrixXd &x, const MatrixXd &y);
+    };
+}
 #endif  // NEURAL_NETWORK_LOSSFUNCTION_H

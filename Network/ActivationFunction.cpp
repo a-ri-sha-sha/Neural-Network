@@ -1,47 +1,54 @@
 #include "ActivationFunction.h"
 
-MatrixXd ActivationFunction::Apply(MatrixXd x) {
-    //    MatrixXd ret(x.rows(), x.cols());
-    //    ret.unaryExpr(apply_(x)); /// ?!?!??!?!
-    //    return ret;
+activation_function::ActivationFunction::ActivationFunction(activation_function::FuncApply f1,
+                                                            activation_function::FuncDerivative f2) : apply_(
+        std::move(f1)),
+                                                                                                      derivative_(
+                                                                                                              std::move(
+                                                                                                                      f2)) {
+
+}
+
+MatrixXd activation_function::ActivationFunction::Apply(MatrixXd &x) {
     x.unaryExpr(apply_);
     return x;
 }
-MatrixXd ActivationFunction::Derivative(MatrixXd x) {
-    x.unaryExpr(derivate_);
+
+MatrixXd activation_function::ActivationFunction::Derivative(MatrixXd &x) {
+    x.unaryExpr(derivative_);
     return x;
-}
-double Sigmoid::Apply(double x) {
-    return 1 / (1 + exp(-x));
-}
-double Sigmoid::Derivative(double x) {
-    return exp(-x) / ((1 + exp(-x)) * (1 + exp(-x)));
-}
-double Tanh::Apply(double x) {
-    return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
-}
-double Tanh::Derivative(double x) {
-    return 4 * exp(2 * x) / (exp(2 * x) + 1);
-}
-double ReLU::Apply(double x) {
-    if (x < 0) {
-        return 0;
-    }
-    return x;
-}
-double ReLU::Derivative(double x) {
-    if (x < 0) {
-        return 0;
-    }
-    return 1;
-}
-double LeakyReLU::Apply(double x) {
-    return std::max(0.01 * x, x);
 }
 
-double LeakyReLU::Derivative(double x) {
-    if (x < 0) {
-        return 0.01;
-    }
-    return 1;
+double activation_function::Sigmoid::Apply(double x) {
+    return 1 / (1 + exp(-x));
+}
+
+double activation_function::Sigmoid::Derivative(double x) {
+    double g = Apply(x);
+    return g * (1 - g);
+}
+
+double activation_function::Tanh::Apply(double x) {
+    return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
+}
+
+double activation_function::Tanh::Derivative(double x) {
+    double g = Apply(x);
+    return 1.0 - g * g;
+}
+
+double activation_function::ReLU::Apply(double x) {
+    return x * (x > 0);
+}
+
+double activation_function::ReLU::Derivative(double x) {
+    return x >= 0;
+}
+
+double activation_function::LeakyReLU::Apply(double x) {
+    return std::max(leaky * x, x);
+}
+
+double activation_function::LeakyReLU::Derivative(double x) {
+    return leaky * (x < 0) + (x >= 0);
 }

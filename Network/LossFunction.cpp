@@ -1,19 +1,33 @@
 #include "LossFunction.h"
 
-double MSE::Dist(MatrixXd x, MatrixXd y) {
-    double ret = 0;
-    for (int i = 0; i < x.rows(); ++i) {
-        for (int j = 0; j < x.cols(); ++j) {
-            ret += (x(i, j) - y(i, j)) * (x(i, j) - y(i, j));
-        }
-    }
-    return ret / x.size();
+loss_function::LossFunction::LossFunction(loss_function::FuncDist f1, loss_function::FuncU f2) : dist_(std::move(f1)),
+                                                                                                 u_(std::move(f2)) {
 }
-double BCELoss::Dist(MatrixXd x, MatrixXd y) {
-    double ret = 0;
-    for (int i = 0; i < x.rows(); ++i) {
-        for (int j = 0; j < x.cols(); ++j) {
-            ret += y(i, j) * std::log(x(i, j)) + (1 - y(i, j)) * std::log(1 - x(i, j));
-        }
-    }
+
+const double loss_function::LossFunction::Dist(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
+    return dist_(x, y);
 }
+
+const loss_function::MatrixXd
+loss_function::LossFunction::FirstU(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
+    return u_(x, y);
+}
+
+double loss_function::MSE::Dist(const MatrixXd &x, const MatrixXd &y) {
+    return ((x - y) * (x - y).transpose()).trace() / x.size();
+}
+
+loss_function::MatrixXd loss_function::MSE::FirstU(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
+    return 2.0 * (x - y) / x.size();
+}
+
+double loss_function::BCELoss::Dist(const MatrixXd &x, const MatrixXd &y) {
+    return -(y.array() * x.array().log() + (1.0 - y.array()) * (1.0 - x.array()).log()).sum() / x.size();
+}
+
+loss_function::MatrixXd
+loss_function::BCELoss::FirstU(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
+    return (x.array() - y.array()) / (x.array() * (1.0 - x.array()) * x.size()) ;
+}
+
+

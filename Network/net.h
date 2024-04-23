@@ -2,22 +2,24 @@
 #define NEURAL_NETWORKS_NET_H
 
 #include <initializer_list>
-#include "../eigen/Eigen/Dense"
+#include "Eigen/Dense"
 #include "ActivationFunction.h"
 
-using Eigen::Matrix;
-using Eigen::MatrixXd;
+namespace neural_network {
+    using MatrixXd = Eigen::MatrixXd;
+    using ActivationFunction = activation_function::ActivationFunction;
 
-class Network {
-public:
-    Network(
-        std::initializer_list<int> layers,
-        std::initializer_list<ActivationFunction> func);  // тут должны быть еще какие-то аргументы
+    class Network {
+    public:
+        Network(
+                std::initializer_list<int> layers,
+                std::initializer_list<ActivationFunction> func);
 
-    void train();  // тоже какие-то аргументы
+        void train();  // тоже какие-то аргументы
 
-private:
-    //??
-};
-
+    private:
+        //??
+    };
+    void run_all_tests();
+}
 #endif  // NEURAL_NETWORKS_NET_H
