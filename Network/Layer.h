@@ -4,25 +4,21 @@
 #include "Eigen/Dense"
 #include "../EigenRand/EigenRand/EigenRand"
 #include "ActivationFunction.h"
+#include "Definisions.h"
 
-namespace layer {
+namespace neural_network {
     class Layer {
     private:
+        using ActivationFunction = neural_network::ActivationFunction;
         using RandGen = Eigen::Rand::Vmt19937_64;
-        using Matrix = Eigen::MatrixXd;
-        using ActivationFunction = activation_function::ActivationFunction;
-        using Vector = Eigen::VectorXd;
-        using Index = Eigen::Index;
     public:
         Layer(ActivationFunction sigma, Index input, Index output, int seed, double normalize);
-
         Matrix Result(const Matrix& x) const;
 
-        Matrix GetDerA(const Matrix &x, const Matrix &u) const;
-        Matrix GetDerB(const Matrix &x, const Matrix &u) const;
+        Matrix MakeDerA(const Matrix &x, const Matrix &u) const;
+        Matrix MakeDerB(const Matrix &x, const Matrix &u) const;
 
-        Matrix PushU(Matrix x, Matrix u) const;
-
+        Matrix PushU(const Matrix& x, const Matrix& u) const;
         void ChangeA(const Matrix& DerA, Index h);
         void ChangeB(const Matrix& DerB, Index h);
 

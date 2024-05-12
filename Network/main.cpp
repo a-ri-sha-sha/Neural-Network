@@ -5,7 +5,7 @@
 
 int main() {
     try {
-        neural_network::RunAllTests();
+//        neural_network::RunAllTests();
     } catch (...) {
         except::react();
     }

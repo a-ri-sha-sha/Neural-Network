@@ -1,6 +1,6 @@
 #include "LossFunction.h"
 
-namespace loss_function {
+namespace neural_network {
     LossFunction::LossFunction(FuncDist f1, FuncDer f2) : dist_(std::move(f1)), der_(std::move(f2)) {
     }
 
@@ -32,7 +32,7 @@ namespace loss_function {
         return ((x - y) * (x - y).transpose()).trace() / x.size();
     }
 
-    Matrix loss_function::MSE::Derivative(const Vector &x, const Vector &y) {
+    Matrix MSE::Derivative(const Vector &x, const Vector &y) {
         return 2.0 * (x - y) / x.size();
     }
 

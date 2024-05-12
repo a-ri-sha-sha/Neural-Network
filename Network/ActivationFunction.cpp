@@ -1,6 +1,6 @@
 #include "ActivationFunction.h"
 
-namespace activation_function {
+namespace neural_network {
     ActivationFunction::ActivationFunction(FunctionRtoR f1, FunctionRtoR f2) : apply_(std::move(f1)), derivative_(std::move(f2)) {
 
     }
@@ -23,12 +23,11 @@ namespace activation_function {
     }
 
     double Tanh::Apply(double x) {
-        return (exp(x) - exp(-x)) / (exp(x) + exp(-x));
+        return tanh(x);
     }
 
     double Tanh::Derivative(double x) {
-        double g = Apply(x);
-        return 1.0 - g * g;
+        return 1.0 - tanh(x) * tanh(x);
     }
 
     double ReLU::Apply(double x) {

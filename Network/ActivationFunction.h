@@ -4,7 +4,7 @@
 #include "Eigen/Dense"
 #include <cmath>
 
-namespace activation_function {
+namespace neural_network {
     using FunctionRtoR = std::function<double(double)>;
     using Matrix = Eigen::MatrixXd;
 

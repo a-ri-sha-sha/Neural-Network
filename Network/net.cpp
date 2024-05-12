@@ -50,8 +50,8 @@ namespace neural_network {
                                   int epoch, int power_learning_rate, const LossFunction &lf) {
         Matrix u = lf.Derivative(output, batch_output);
         for (int j = layers_.size() - 1; j >= 0; --j) {
-            Matrix DerA = layers_[j].GetDerA(output, u);
-            Matrix DerB = layers_[j].GetDerB(output, u);
+            Matrix DerA = layers_[j].MakeDerA(output, u);
+            Matrix DerB = layers_[j].MakeDerB(output, u);
             double learning_rate = 1.0 / (1 + std::pow(epoch, power_learning_rate));
             layers_[j].ChangeA(DerA, learning_rate);
             layers_[j].ChangeB(DerB, learning_rate);
@@ -59,11 +59,6 @@ namespace neural_network {
                 u = layers_[j].PushU(output, u);
             }
         }
-
-    }
-
-
-    void RunAllTests() {
 
     }
 }

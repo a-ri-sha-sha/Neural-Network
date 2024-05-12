@@ -1,30 +1,26 @@
 #include "Layer.h"
 
-namespace layer {
+namespace neural_network {
     Layer::Layer(ActivationFunction sigma, Index input, Index output, int seed, double normalize) : sigma_(
             std::move(sigma)), A_(GetRandomMatrix(output, input, seed, normalize)), b_(GetRandomMatrix(
                     output, 1, seed, normalize)) {
     }
 
 
-    Layer::Matrix Layer::Result(const Matrix &x) const {
+    Matrix Layer::Result(const Matrix &x) const {
         return sigma_.Apply(A_ * x + b_);
     }
 
-    Layer::Matrix Layer::GetDerA(const Matrix &x, const Matrix &u) const {
+    Matrix Layer::MakeDerA(const Matrix &x, const Matrix &u) const {
         return (u.transpose() * (x.transpose())) / x.rows();
     }
 
-    Layer::Matrix Layer::GetDerB(const Matrix &x, const Matrix &u) const {
+    Matrix Layer::MakeDerB(const Matrix &x, const Matrix &u) const {
         return (u.transpose() * Eigen::RowVectorXd::Ones(A_.rows()).transpose());
     }
 
-    Layer::Matrix Layer::PushU(Matrix x, Matrix u) const {
-        Matrix e = Eigen::RowVectorXd::Ones(A_.rows());
-        Matrix der = sigma_.Derivative(A_ * x + b_ * e);
-        Matrix new_u(u.rows(), u.cols());
-        new_u = u * der;
-        return new_u;
+    Matrix Layer::PushU(const Matrix& x, const Matrix& u) const {
+        return u * sigma_.Derivative((A_ * x).colwise() + b_);
     }
 
     void Layer::ChangeA(const Matrix &DerA, Index h) {
@@ -36,11 +32,11 @@ namespace layer {
     }
 
     Layer::RandGen Layer::GetUrng(int seed){
-        static Layer::RandGen urng = seed;
+        static RandGen urng = seed;
         return urng;
     }
 
-    Layer::Matrix Layer::GetRandomMatrix(Layer::Index rows, Layer::Index cols, int seed, float normalize) {
+    Matrix Layer::GetRandomMatrix(Index rows, Index cols, int seed, float normalize) {
         return Eigen::Rand::normal<Matrix>(rows, cols, GetUrng(seed)) * normalize;
     }
 

@@ -2,20 +2,19 @@
 #define NEURAL_NETWORK_LOSSFUNCTION_H
 
 #include "Eigen/Dense"
+#include "Definisions.h"
 
-namespace loss_function {
-    using Matrix = Eigen::MatrixXd;
-    using Vector = Eigen::VectorXd;
-    using Index = Eigen::Index;
-    using FuncDist = std::function<double(const Vector &, const Vector &)>;
-    using FuncDer = std::function<Matrix(const Vector &, const Vector &)>;
-
-
+namespace neural_network {
     class LossFunction {
+    private:
+        using FuncDist = std::function<double(const Vector &, const Vector &)>;
+        using FuncDer = std::function<Matrix(const Vector &, const Vector &)>;
     public:
         LossFunction(FuncDist f1, FuncDer f2);
+
         double Dist(const Vector &x, const Vector &y) const;
         Matrix Derivative(const Vector &x, const Vector &y) const;
+
         double Dist(const Vector &x, const Matrix &y) const;
         Matrix Derivative(const Vector &x, const Matrix &y) const;
 
