@@ -4,51 +4,42 @@
 #include "Eigen/Dense"
 #include <cmath>
 
-using MatrixXd = Eigen::MatrixXd;
-
 namespace activation_function {
-
-    using FuncApply = std::function<double(double)>;
-    using FuncDerivative = std::function<double(double)>;
+    using FunctionRtoR = std::function<double(double)>;
+    using Matrix = Eigen::MatrixXd;
 
     class ActivationFunction {
     public:
-        ActivationFunction(FuncApply f1, FuncDerivative f2);
-
-        MatrixXd Apply(MatrixXd &x);
-
-        MatrixXd Derivative(MatrixXd &x);
+        ActivationFunction(FunctionRtoR f1, FunctionRtoR f2);
+        Matrix Apply(const Matrix &x) const;
+        Matrix Derivative(const Matrix &x) const;
 
     private:
-        std::function<double(double)> apply_;
-        std::function<double(double)> derivative_;
+        FunctionRtoR apply_;
+        FunctionRtoR derivative_;
     };
 
     class Sigmoid {
     public:
         static double Apply(double x);
-
         static double Derivative(double x);
     };
 
     class Tanh {
     public:
         static double Apply(double x);
-
         static double Derivative(double x);
     };
 
     class ReLU {
     public:
         static double Apply(double x);
-
         static double Derivative(double x);
     };
 
     class LeakyReLU {
     public:
         static double Apply(double x);
-
         static double Derivative(double x);
 
     private:
@@ -57,5 +48,4 @@ namespace activation_function {
 
     /// TODO: softmax?
 }
-
 #endif  // NEURAL_NETWORK_ACTIVATIONFUNCTION_H

@@ -4,36 +4,36 @@
 #include "Eigen/Dense"
 
 namespace loss_function {
-    using MatrixXd = Eigen::MatrixXd;
-    using FuncDist = std::function<double(const MatrixXd &, const MatrixXd &)>;
-    using FuncU = std::function<MatrixXd(const MatrixXd &, const MatrixXd &)>;
+    using Matrix = Eigen::MatrixXd;
+    using Vector = Eigen::VectorXd;
+    using Index = Eigen::Index;
+    using FuncDist = std::function<double(const Vector &, const Vector &)>;
+    using FuncDer = std::function<Matrix(const Vector &, const Vector &)>;
 
 
     class LossFunction {
     public:
-        LossFunction(FuncDist f1, FuncU f2);
-
-        const double Dist(const MatrixXd &x, const MatrixXd &y);
-
-        const MatrixXd FirstU(const MatrixXd &x, const MatrixXd &y);// d(dist(x, y))/dx
+        LossFunction(FuncDist f1, FuncDer f2);
+        double Dist(const Vector &x, const Vector &y) const;
+        Matrix Derivative(const Vector &x, const Vector &y) const;
+        double Dist(const Vector &x, const Matrix &y) const;
+        Matrix Derivative(const Vector &x, const Matrix &y) const;
 
     private:
         FuncDist dist_;
-        FuncU u_;
+        FuncDer der_;
     };
 
     class MSE {
     public:
-        static double Dist(const MatrixXd &x, const MatrixXd &y);
-
-        static MatrixXd FirstU(const MatrixXd &x, const MatrixXd &y);
+        static double Dist(const Vector &x, const Vector &y);
+        static Matrix Derivative(const Vector &x, const Vector &y);
     };
 
     class BCELoss {
     public:
-        static double Dist(const MatrixXd &x, const MatrixXd &y);
-
-        static MatrixXd FirstU(const MatrixXd &x, const MatrixXd &y);
+        static double Dist(const Vector &x, const Vector &y);
+        static Matrix Derivative(const Vector &x, const Vector &y);
     };
 }
 #endif  // NEURAL_NETWORK_LOSSFUNCTION_H

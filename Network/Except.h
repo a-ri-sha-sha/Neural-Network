@@ -4,5 +4,4 @@
 namespace except {
     void react();
 }
-
 #endif //NEURAL_NETWORK_EXCEPT_H

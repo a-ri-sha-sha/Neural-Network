@@ -2,33 +2,36 @@
 #define NEURAL_NETWORK_LAYER_H
 
 #include "Eigen/Dense"
+#include "../EigenRand/EigenRand/EigenRand"
 #include "ActivationFunction.h"
 
 namespace layer {
-    using MatrixXd = Eigen::MatrixXd;
-    using ActivationFunction =  activation_function::ActivationFunction;
-
     class Layer {
+    private:
+        using RandGen = Eigen::Rand::Vmt19937_64;
+        using Matrix = Eigen::MatrixXd;
+        using ActivationFunction = activation_function::ActivationFunction;
+        using Vector = Eigen::VectorXd;
+        using Index = Eigen::Index;
     public:
-        Layer(ActivationFunction sigma, size_t cols, size_t rows);
+        Layer(ActivationFunction sigma, Index input, Index output, int seed, double normalize);
 
-        MatrixXd Result(const MatrixXd& x);
+        Matrix Result(const Matrix& x) const;
 
-        MatrixXd GetDerA(MatrixXd x, MatrixXd u);
+        Matrix GetDerA(const Matrix &x, const Matrix &u) const;
+        Matrix GetDerB(const Matrix &x, const Matrix &u) const;
 
-        MatrixXd GetDerB(MatrixXd x, MatrixXd u);
+        Matrix PushU(Matrix x, Matrix u) const;
 
-        MatrixXd NewU(MatrixXd x, MatrixXd u);
-
-        MatrixXd NewA(MatrixXd x, MatrixXd u);
-
-        MatrixXd NewB(MatrixXd x, MatrixXd u);
+        void ChangeA(const Matrix& DerA, Index h);
+        void ChangeB(const Matrix& DerB, Index h);
 
     private:
-        MatrixXd A_;
-        MatrixXd b_;
+        Matrix A_;
+        Vector b_;
         ActivationFunction sigma_;
-        double h_;  // должно же быть тут, да?
+        RandGen GetUrng(int seed);
+        Matrix GetRandomMatrix(Index rows, Index cols, int seed, float normalize);
     };
 }
 #endif  // NEURAL_NETWORK_LAYER_H

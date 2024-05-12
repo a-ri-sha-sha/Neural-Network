@@ -1,30 +1,47 @@
 #include "Layer.h"
 
-MatrixXd layer::Layer::Result(const MatrixXd& x) {
-    return sigma_.Apply(A_ * x + b_);
-}
+namespace layer {
+    Layer::Layer(ActivationFunction sigma, Index input, Index output, int seed, double normalize) : sigma_(
+            std::move(sigma)), A_(GetRandomMatrix(output, input, seed, normalize)), b_(GetRandomMatrix(
+                    output, 1, seed, normalize)) {
+    }
 
-MatrixXd layer::Layer::GetDerA(MatrixXd x, MatrixXd u) {
-    return (NewU(x, u).transpose() * (x.transpose())) / x.rows();
-}
 
-MatrixXd layer::Layer::GetDerB(MatrixXd x, MatrixXd u) {
-    return (NewU(x, u).transpose() * Eigen::RowVectorXd::Ones(A_.rows()).transpose());
-}
+    Layer::Matrix Layer::Result(const Matrix &x) const {
+        return sigma_.Apply(A_ * x + b_);
+    }
 
-MatrixXd layer::Layer::NewU(MatrixXd x, MatrixXd u) {
-    MatrixXd e = Eigen::RowVectorXd::Ones(A_.rows());
-    MatrixXd der = sigma_.Derivative(A_ * x + b_ * e);
-    MatrixXd new_u(u.rows(), u.cols());
-    new_u = u * der;
-    return new_u;
-}
+    Layer::Matrix Layer::GetDerA(const Matrix &x, const Matrix &u) const {
+        return (u.transpose() * (x.transpose())) / x.rows();
+    }
 
-MatrixXd layer::Layer::NewA(MatrixXd x, MatrixXd u) {
-    return A_ - h_ * GetDerA(x, u);
-}
+    Layer::Matrix Layer::GetDerB(const Matrix &x, const Matrix &u) const {
+        return (u.transpose() * Eigen::RowVectorXd::Ones(A_.rows()).transpose());
+    }
 
-MatrixXd layer::Layer::NewB(MatrixXd x, MatrixXd u) {
-    return b_ - h_ * GetDerB(x, u);
-}
+    Layer::Matrix Layer::PushU(Matrix x, Matrix u) const {
+        Matrix e = Eigen::RowVectorXd::Ones(A_.rows());
+        Matrix der = sigma_.Derivative(A_ * x + b_ * e);
+        Matrix new_u(u.rows(), u.cols());
+        new_u = u * der;
+        return new_u;
+    }
 
+    void Layer::ChangeA(const Matrix &DerA, Index h) {
+        A_ = A_ - h * DerA;
+    }
+
+    void Layer::ChangeB(const Matrix &DerB, Index h) {
+        b_ = b_ - h * DerB;
+    }
+
+    Layer::RandGen Layer::GetUrng(int seed){
+        static Layer::RandGen urng = seed;
+        return urng;
+    }
+
+    Layer::Matrix Layer::GetRandomMatrix(Layer::Index rows, Layer::Index cols, int seed, float normalize) {
+        return Eigen::Rand::normal<Matrix>(rows, cols, GetUrng(seed)) * normalize;
+    }
+
+}

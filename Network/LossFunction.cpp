@@ -1,33 +1,46 @@
 #include "LossFunction.h"
 
-loss_function::LossFunction::LossFunction(loss_function::FuncDist f1, loss_function::FuncU f2) : dist_(std::move(f1)),
-                                                                                                 u_(std::move(f2)) {
+namespace loss_function {
+    LossFunction::LossFunction(FuncDist f1, FuncDer f2) : dist_(std::move(f1)), der_(std::move(f2)) {
+    }
+
+    double LossFunction::Dist(const Vector &x, const Vector &y) const {
+        return dist_(x, y);
+    }
+
+    Matrix LossFunction::Derivative(const Vector &x, const Vector &y) const {
+        return der_(x, y);
+    }
+
+    double LossFunction::Dist(const Vector &x, const Matrix &y) const {
+        double ret = 0;
+        for (Index i = 0; i < y.cols(); ++i) {
+            ret += dist_(x, y.col(i));
+        }
+        return ret / y.cols();
+    }
+
+    Matrix LossFunction::Derivative(const Vector &x, const Matrix &y) const {
+        Matrix ret = Matrix::Zero(x.size(), x.size());
+        for (Index i = 0; i < y.cols(); ++i) {
+            ret += der_(x, y.col(i));
+        }
+        return ret / y.cols();
+    }
+
+    double MSE::Dist(const Vector &x, const Vector &y) {
+        return ((x - y) * (x - y).transpose()).trace() / x.size();
+    }
+
+    Matrix loss_function::MSE::Derivative(const Vector &x, const Vector &y) {
+        return 2.0 * (x - y) / x.size();
+    }
+
+    double BCELoss::Dist(const Vector &x, const Vector &y) {
+        return -(y.array() * x.array().log() + (1.0 - y.array()) * (1.0 - x.array()).log()).sum() / x.size();
+    }
+
+    Matrix BCELoss::Derivative(const Vector &x, const Vector &y) {
+        return (x.array() - y.array()) / (x.array() * (1.0 - x.array()) * x.size());
+    }
 }
-
-const double loss_function::LossFunction::Dist(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
-    return dist_(x, y);
-}
-
-const loss_function::MatrixXd
-loss_function::LossFunction::FirstU(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
-    return u_(x, y);
-}
-
-double loss_function::MSE::Dist(const MatrixXd &x, const MatrixXd &y) {
-    return ((x - y) * (x - y).transpose()).trace() / x.size();
-}
-
-loss_function::MatrixXd loss_function::MSE::FirstU(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
-    return 2.0 * (x - y) / x.size();
-}
-
-double loss_function::BCELoss::Dist(const MatrixXd &x, const MatrixXd &y) {
-    return -(y.array() * x.array().log() + (1.0 - y.array()) * (1.0 - x.array()).log()).sum() / x.size();
-}
-
-loss_function::MatrixXd
-loss_function::BCELoss::FirstU(const loss_function::MatrixXd &x, const loss_function::MatrixXd &y) {
-    return (x.array() - y.array()) / (x.array() * (1.0 - x.array()) * x.size()) ;
-}
-
-
