@@ -15,11 +15,11 @@ namespace neural_network {
         Network(std::vector<Index> sizes, std::vector<ActivationFunction> func, int seed, double normalize);
         void Train(const Data &data, int epochs, double eps, Index batch_size, const LossFunction &lf,
                    int power_learning_rate = 1);
-        Matrix Predict(const Matrix &x);
+        Vector Predict(const Matrix &x);
 
     private:
-        Matrix ForwardPropagation(const Matrix &batch_input);
-        void BackPropagation(const Matrix &output, const Matrix &batch_output, int epoch, int power_learning_rate,
+        Vector ForwardPropagation(const Matrix &batch_input);
+        void BackPropagation(const Vector &output, const Matrix &batch_output, int epoch, int power_learning_rate,
                              const LossFunction &lf);
 
     private:

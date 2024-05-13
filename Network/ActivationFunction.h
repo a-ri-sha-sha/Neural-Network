@@ -3,14 +3,15 @@
 
 #include "Eigen/Dense"
 #include <cmath>
+#include "Definisions.h"
 
 namespace neural_network {
     using FunctionRtoR = std::function<double(double)>;
-    using Matrix = Eigen::MatrixXd;
 
     class ActivationFunction {
     public:
         ActivationFunction(FunctionRtoR f1, FunctionRtoR f2);
+
         Matrix Apply(const Matrix &x) const;
         Matrix Derivative(const Matrix &x) const;
 

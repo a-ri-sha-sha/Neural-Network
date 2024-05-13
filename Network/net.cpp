@@ -14,7 +14,6 @@ namespace neural_network {
                         int power_learning_rate) {
         std::vector<int> indices(data.input.cols());
         std::iota(indices.begin(), indices.end(), 0);
-
         std::random_device rd;
         std::mt19937 gen(rd());
 
@@ -24,7 +23,7 @@ namespace neural_network {
                 Index actual_batch_size = std::min(batch_size, data.input.cols() - i);
                 Matrix batch_input = data.input.block(0, i, data.input.rows(), actual_batch_size);
                 Matrix batch_output = data.output.block(0, i, data.output.rows(), actual_batch_size);
-                Matrix output = ForwardPropagation(batch_input);
+                Vector output = ForwardPropagation(batch_input);
                 double loss = lf.Dist(output, batch_output);
                 if (loss < eps) {
                     return;
@@ -34,11 +33,11 @@ namespace neural_network {
         }
     }
 
-    Matrix Network::Predict(const Matrix &x) {
+    Vector Network::Predict(const Matrix &x) {
         return ForwardPropagation(x);
     }
 
-    Matrix Network::ForwardPropagation(const Matrix &batch_input) {
+    Vector Network::ForwardPropagation(const Matrix &batch_input) {
         Matrix output = batch_input;
         for (Layer &layer: layers_) {
             output = layer.Result(output);
@@ -46,7 +45,7 @@ namespace neural_network {
         return output;
     }
 
-    void Network::BackPropagation(const Matrix &output, const Matrix &batch_output,
+    void Network::BackPropagation(const Vector &output, const Matrix &batch_output,
                                   int epoch, int power_learning_rate, const LossFunction &lf) {
         Matrix u = lf.Derivative(output, batch_output);
         for (int j = layers_.size() - 1; j >= 0; --j) {
