@@ -1,9 +1,9 @@
 #include "Layer.h"
 
 namespace neural_network {
-    Layer::Layer(ActivationFunction sigma, Index input, Index output, int seed, double normalize) : sigma_(
-            std::move(sigma)), A_(GetRandomMatrix(output, input, seed, normalize)), b_(GetRandomMatrix(
-            output, 1, seed, normalize)) {
+    Layer::Layer(ActivationFunction sigma, Index input, Index output, double normalize) : sigma_(
+            std::move(sigma)), A_(GetRandomMatrix(output, input, normalize)), b_(GetRandomMatrix(
+            output, 1, normalize)) {
     }
 
 
@@ -48,13 +48,12 @@ namespace neural_network {
         b_ = b_ - h * der_b;
     }
 
-    Layer::RandGen Layer::GetUrng(int seed) {
-        static RandGen urng = seed;
+    Layer::RandGen &Layer::GetUrng() {
+        static RandGen urng = 1;
         return urng;
     }
 
-    Matrix Layer::GetRandomMatrix(Index rows, Index cols, int seed, float normalize) {
-        return Eigen::Rand::normal<Matrix>(rows, cols, GetUrng(seed)) * normalize;
+    Matrix Layer::GetRandomMatrix(Index rows, Index cols, float normalize) {
+        return Eigen::Rand::normal<Matrix>(rows, cols, GetUrng()) * normalize;
     }
-
 }

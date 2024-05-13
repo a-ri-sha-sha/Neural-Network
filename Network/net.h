@@ -12,7 +12,7 @@
 namespace neural_network {
     class Network {
     public:
-        Network(std::vector<Index> sizes, std::vector<ActivationFunction> func, int seed, double normalize);
+        Network(std::vector<Index> sizes, std::vector<ActivationFunction> func,  double normalize);
         void Train(const Data &data, int epochs, double eps, Index batch_size, const LossFunction &lf,
                    int power_learning_rate = 1);
         Vector Predict(const Matrix &x);

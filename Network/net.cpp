@@ -3,10 +3,10 @@
 #include <random>
 
 namespace neural_network {
-    Network::Network(std::vector<Index> sizes, std::vector<ActivationFunction> func, int seed, double normalize) {
+    Network::Network(std::vector<Index> sizes, std::vector<ActivationFunction> func, double normalize) {
         layers_.reserve(sizes.size() - 1);
         for (Index i = 1; i < sizes.size(); ++i) {
-            layers_.emplace_back(func[i], sizes[i - 1], sizes[i], seed, normalize);
+            layers_.emplace_back(func[i], sizes[i - 1], sizes[i], normalize);
         }
     }
 
