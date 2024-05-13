@@ -29,29 +29,19 @@ struct Data {
 ```
 
    • Количество эпох
-```cpp
-int epochs;
-```
    
    • Желаемая погрешность (рассчитывается функцией потери)
-```cpp
-double eps;
-```
+
    • Размер батча с данными
+
    • Желаемая погрешность (рассчитывается функцией потери)
-```cpp
-Index batch_size;
-```
+
    • Функция потерь
 ```cpp
 LossFunction f1 = MSE();
 LossFunction f2 = BCELoss();
 ```
-   • Степень learning_rate. 
-   ```cpp
-int power_learning_rate = 1;
-```
-Сам learning_rate вычисляется по формуле 
+   • Степень learning_rate. Сам learning_rate вычисляется по формуле 
 ```cpp
 double learning_rate = 1.0 / (1 + std::pow(epoch, power_learning_rate));
 ```
