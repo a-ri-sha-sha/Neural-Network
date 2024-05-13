@@ -1,7 +1,6 @@
 #ifndef NEURAL_NETWORK_LOSSFUNCTION_H
 #define NEURAL_NETWORK_LOSSFUNCTION_H
 
-#include "Eigen/Dense"
 #include "Definisions.h"
 
 namespace neural_network {

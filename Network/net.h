@@ -1,9 +1,7 @@
 #ifndef NEURAL_NETWORKS_NET_H
 #define NEURAL_NETWORKS_NET_H
 
-#include <initializer_list>
 #include <vector>
-#include "Eigen/Dense"
 #include "ActivationFunction.h"
 #include "Layer.h"
 #include "LossFunction.h"

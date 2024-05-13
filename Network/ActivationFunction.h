@@ -1,7 +1,6 @@
 #ifndef NEURAL_NETWORK_ACTIVATIONFUNCTION_H
 #define NEURAL_NETWORK_ACTIVATIONFUNCTION_H
 
-#include "Eigen/Dense"
 #include <cmath>
 #include "Definisions.h"
 

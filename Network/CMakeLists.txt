@@ -4,6 +4,6 @@ add_executable(${PROJECT_NAME} main.cpp net.cpp ActivationFunction.cpp LossFunct
 target_link_libraries(${PROJECT_NAME} Eigen3::Eigen)
 
 include_directories(../eigen)
-#include_directories(../EigenRand)
+include_directories(../EigenRand)
 
 file(GLOB SOURCES "*.cpp")
