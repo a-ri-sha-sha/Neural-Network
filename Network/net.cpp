@@ -23,7 +23,7 @@ namespace neural_network {
                 Index actual_batch_size = std::min(batch_size, data.input.cols() - i);
                 Matrix batch_input = data.input.block(0, i, data.input.rows(), actual_batch_size);
                 Matrix batch_output = data.output.block(0, i, data.output.rows(), actual_batch_size);
-                Vector output = ForwardPropagation(batch_input);
+                Matrix output = ForwardPropagation(batch_input);
                 double loss = lf.Dist(output, batch_output);
                 if (loss < eps) {
                     return;
@@ -45,15 +45,15 @@ namespace neural_network {
         return output;
     }
 
-    void Network::BackPropagation(const Vector &output, const Matrix &batch_output,
+    void Network::BackPropagation(const Matrix &output, const Matrix &batch_output,
                                   int epoch, int power_learning_rate, const LossFunction &lf) {
         Matrix u = lf.Derivative(output, batch_output);
         for (int j = layers_.size() - 1; j >= 0; --j) {
-            Matrix DerA = layers_[j].MakeDerA(output, u);
-            Matrix DerB = layers_[j].MakeDerB(output, u);
+            Matrix der_A = layers_[j].MakeDerA(output, u);
+            Matrix der_b = layers_[j].MakeDerB(output, u);
             double learning_rate = 1.0 / (1 + std::pow(epoch, power_learning_rate));
-            layers_[j].ChangeA(DerA, learning_rate);
-            layers_[j].ChangeB(DerB, learning_rate);
+            layers_[j].ChangeA(der_A, learning_rate);
+            layers_[j].ChangeB(der_b, learning_rate);
             if (j > 0) {
                 u = layers_[j].PushU(output, u);
             }
