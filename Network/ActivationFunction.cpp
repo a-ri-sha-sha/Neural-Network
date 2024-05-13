@@ -13,37 +13,36 @@ namespace neural_network {
         return x.unaryExpr(derivative_);
     }
 
-    double Sigmoid::Apply(double x) {
+    double Sigmoid::apply(double x) {
         return 1 / (1 + exp(-x));
     }
 
-    double Sigmoid::Derivative(double x) {
-        double g = Apply(x);
+    double Sigmoid::derivative(double x) {
+        double g = apply(x);
         return g * (1 - g);
     }
 
-    double Tanh::Apply(double x) {
+    double Tanh::apply(double x) {
         return tanh(x);
     }
 
-    double Tanh::Derivative(double x) {
+    double Tanh::derivative(double x) {
         return 1.0 - tanh(x) * tanh(x);
     }
 
-    double ReLU::Apply(double x) {
+    double ReLu::apply(double x) {
         return x * (x > 0);
     }
 
-    double ReLU::Derivative(double x) {
+    double ReLu::derivative(double x) {
         return x >= 0;
     }
 
-    double LeakyReLU::Apply(double x) {
-        return std::max(leaky * x, x);
+    double LeakyReLu::apply(double leak, double x) {
+        return std::max(leak * x, x);
     }
 
-    double LeakyReLU::Derivative(double x) {
-        return leaky * (x < 0) + (x >= 0);
+    double LeakyReLu::derivative(double leak, double x) {
+        return leak * (x < 0) + (x >= 0);
     }
-
 }

@@ -7,10 +7,10 @@
 namespace neural_network {
     class LossFunction {
     private:
-        using FuncDist = std::function<double(const Vector &, const Vector &)>;
-        using FuncDer = std::function<Matrix(const Vector &, const Vector &)>;
+        using FuncVectToR = std::function<double(const Vector &, const Vector &)>;
+        using FuncVectToMatrix = std::function<Matrix(const Vector &, const Vector &)>;
     public:
-        LossFunction(FuncDist f1, FuncDer f2);
+        LossFunction(FuncVectToR f1, FuncVectToMatrix f2);
 
         double Dist(const Vector &x, const Vector &y) const;
         Matrix Derivative(const Vector &x, const Vector &y) const;
@@ -19,18 +19,28 @@ namespace neural_network {
         Matrix Derivative(const Vector &x, const Matrix &y) const;
 
     private:
-        FuncDist dist_;
-        FuncDer der_;
+        FuncVectToR dist_;
+        FuncVectToMatrix der_;
     };
 
-    class MSE {
+    class MSE : public LossFunction {
     public:
+        MSE() : LossFunction(
+                [](const Vector &x, const Vector &y) { return Dist(x, y); },
+                [](const Vector &x, const Vector &y) { return Derivative(x, y); }) {}
+
+    private:
         static double Dist(const Vector &x, const Vector &y);
         static Matrix Derivative(const Vector &x, const Vector &y);
     };
 
-    class BCELoss {
+    class BCELoss : public LossFunction {
     public:
+        BCELoss() : LossFunction(
+                [](const Vector &x, const Vector &y) { return Dist(x, y); },
+                [](const Vector &x, const Vector &y) { return Derivative(x, y); }) {}
+
+    private:
         static double Dist(const Vector &x, const Vector &y);
         static Matrix Derivative(const Vector &x, const Vector &y);
     };

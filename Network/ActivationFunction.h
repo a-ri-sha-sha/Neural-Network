@@ -11,7 +11,6 @@ namespace neural_network {
     class ActivationFunction {
     public:
         ActivationFunction(FunctionRtoR f1, FunctionRtoR f2);
-
         Matrix Apply(const Matrix &x) const;
         Matrix Derivative(const Matrix &x) const;
 
@@ -20,31 +19,52 @@ namespace neural_network {
         FunctionRtoR derivative_;
     };
 
-    class Sigmoid {
+    class Sigmoid : public ActivationFunction {
     public:
-        static double Apply(double x);
-        static double Derivative(double x);
-    };
-
-    class Tanh {
-    public:
-        static double Apply(double x);
-        static double Derivative(double x);
-    };
-
-    class ReLU {
-    public:
-        static double Apply(double x);
-        static double Derivative(double x);
-    };
-
-    class LeakyReLU {
-    public:
-        static double Apply(double x);
-        static double Derivative(double x);
+        Sigmoid()
+                : ActivationFunction(
+                [](double x) { return apply(x); },
+                [](double x) { return derivative(x); }) {}
 
     private:
-        constexpr static const double leaky = 0.01;
+        static double apply(double x);
+        static double derivative(double x);
+    };
+
+    class Tanh : public ActivationFunction {
+    public:
+        Tanh()
+                : ActivationFunction(
+                [](double x) { return apply(x); },
+                [](double x) { return derivative(x); }) {}
+
+    private:
+        static double apply(double x);
+        static double derivative(double x);
+    };
+
+    class ReLu : public ActivationFunction {
+    public:
+        ReLu()
+                : ActivationFunction(
+                [](double x) { return apply(x); },
+                [](double x) { return derivative(x); }) {}
+
+    private:
+        static double apply(double x);
+        static double derivative(double x);
+    };
+
+    class LeakyReLu : public ActivationFunction {
+    public:
+        LeakyReLu(double leak)
+                : ActivationFunction(
+                [leak](double x) { return apply(leak, x); },
+                [leak](double x) { return derivative(leak, x); }) {}
+
+    private:
+        static double apply(double leak, double x);
+        static double derivative(double leak, double x);
     };
 
     /// TODO: softmax?

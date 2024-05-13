@@ -1,7 +1,7 @@
 #include "LossFunction.h"
 
 namespace neural_network {
-    LossFunction::LossFunction(FuncDist f1, FuncDer f2) : dist_(std::move(f1)), der_(std::move(f2)) {
+    LossFunction::LossFunction(FuncVectToR f1, FuncVectToMatrix f2) : dist_(std::move(f1)), der_(std::move(f2)) {
     }
 
     double LossFunction::Dist(const Vector &x, const Vector &y) const {
