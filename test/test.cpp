@@ -4,11 +4,11 @@
 namespace mnist_test {
     void RunAllTest() {
 //        Network network({}, {}, 1);
-//        LoadMnistData();
+        Data data = LoadMnistData();
     }
 
     Data LoadMnistData() {
-        auto dataset = mnist::read_dataset<std::vector, std::vector, uint8_t, uint8_t>();
+        auto dataset = mnist::read_dataset<std::vector, std::vector, uint8_t, uint8_t>("../../mnist");
         const auto& images = dataset.training_images;
         const auto& labels = dataset.training_labels;
 
