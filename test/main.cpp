@@ -1,11 +1,9 @@
-#include "Eigen/Dense"
-#include "../EigenRand/EigenRand/EigenRand"
-#include "net.h"
-#include "Except.h"
+#include "test.h"
+#include "../Network/Except.h"
 
 int main() {
     try {
-//        neural_network::RunAllTests();
+        mnist_test::RunAllTest();
     } catch (...) {
         except::react();
     }

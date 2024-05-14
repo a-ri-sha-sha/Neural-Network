@@ -1,7 +1,8 @@
 #ifndef NEURAL_NETWORK_DEFINISIONS_H
 #define NEURAL_NETWORK_DEFINISIONS_H
 
-#include "Eigen/Dense"
+#include "../eigen/Eigen/Dense"
+#include <functional>
 
 using Matrix = Eigen::MatrixXd;
 using Vector = Eigen::VectorXd;

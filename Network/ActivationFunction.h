@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "Definisions.h"
+#include <functional>
 
 namespace neural_network {
     class ActivationFunction {

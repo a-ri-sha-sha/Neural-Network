@@ -1,7 +1,7 @@
 #ifndef NEURAL_NETWORK_LAYER_H
 #define NEURAL_NETWORK_LAYER_H
 
-#include "EigenRand/EigenRand"
+#include "../EigenRand/EigenRand/EigenRand"
 #include "ActivationFunction.h"
 #include "Definisions.h"
 

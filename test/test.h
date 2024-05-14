@@ -3,12 +3,12 @@
 
 #include "../Network/net.h"
 
-class test {
-private:
+namespace mnist_test {
     using Network = neural_network::Network;
-public:
-    void
-};
+    void RunAllTest();
+    Data LoadMnistData();
+}
+
 
 
 #endif //NEURAL_NETWORK_TEST_H
