@@ -9,6 +9,9 @@
 
 namespace neural_network {
     class Network {
+    private:
+        using Layer = layer::Layer;
+
     public:
         Network(std::vector<Index> sizes, std::vector<ActivationFunction> func,  double normalize);
         void Train(const Data &data, int epochs, double eps, Index batch_size, const LossFunction &lf,

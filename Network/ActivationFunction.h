@@ -5,9 +5,10 @@
 #include "Definisions.h"
 
 namespace neural_network {
-    using FunctionRtoR = std::function<double(double)>;
-
     class ActivationFunction {
+    private:
+        using FunctionRtoR = std::function<double(double)>;
+
     public:
         ActivationFunction(FunctionRtoR f1, FunctionRtoR f2);
         Matrix Apply(const Matrix &x) const;
@@ -27,6 +28,7 @@ namespace neural_network {
 
     private:
         static double apply(double x);
+
         static double derivative(double x);
     };
 
@@ -39,6 +41,7 @@ namespace neural_network {
 
     private:
         static double apply(double x);
+
         static double derivative(double x);
     };
 
@@ -51,6 +54,7 @@ namespace neural_network {
 
     private:
         static double apply(double x);
+
         static double derivative(double x);
     };
 
@@ -63,6 +67,7 @@ namespace neural_network {
 
     private:
         static double apply(double leak, double x);
+
         static double derivative(double leak, double x);
     };
 

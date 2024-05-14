@@ -5,10 +5,12 @@
 #include "ActivationFunction.h"
 #include "Definisions.h"
 
-namespace neural_network {
+namespace layer {
     class Layer {
     private:
         using RandGen = Eigen::Rand::Vmt19937_64;
+        using ActivationFunction = neural_network::ActivationFunction;
+
     public:
         Layer(ActivationFunction sigma, Index input, Index output, double normalize);
 
@@ -32,8 +34,8 @@ namespace neural_network {
         Vector b_;
         ActivationFunction sigma_;
 
+    private:
         RandGen &GetUrng();
-
         Matrix GetRandomMatrix(Index rows, Index cols, float normalize);
     };
 }

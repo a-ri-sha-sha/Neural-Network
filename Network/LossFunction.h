@@ -8,6 +8,7 @@ namespace neural_network {
     private:
         using FuncVectToR = std::function<double(const Vector &, const Vector &)>;
         using FuncVectToMatrix = std::function<Matrix(const Vector &, const Vector &)>;
+
     public:
         LossFunction(FuncVectToR f1, FuncVectToMatrix f2);
 

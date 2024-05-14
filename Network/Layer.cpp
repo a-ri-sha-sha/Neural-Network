@@ -1,6 +1,6 @@
 #include "Layer.h"
 
-namespace neural_network {
+namespace layer {
     Layer::Layer(ActivationFunction sigma, Index input, Index output, double normalize) : sigma_(
             std::move(sigma)), A_(GetRandomMatrix(output, input, normalize)), b_(GetRandomMatrix(
             output, 1, normalize)) {
