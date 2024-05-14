@@ -1,8 +1,4 @@
 #include "test.h"
-#include "../Network/Except.h"
-#include <iostream>
-#include <functional>
-
 
 int main() {
     try {

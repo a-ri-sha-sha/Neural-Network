@@ -5,11 +5,11 @@ namespace neural_network {
 
     }
 
-    Matrix ActivationFunction::Apply(const Matrix& x) const {
+    Matrix ActivationFunction::apply(const Matrix& x) const {
         return x.unaryExpr(apply_);
     }
 
-    Matrix ActivationFunction::Derivative(const Matrix &x) const {
+    Matrix ActivationFunction::derivative(const Matrix &x) const {
         return x.unaryExpr(derivative_);
     }
 

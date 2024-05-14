@@ -4,7 +4,8 @@
 #include "../Network/net.h"
 
 namespace mnist_test {
-    using Network = neural_network::Network;
+    using namespace neural_network;
+
     void RunAllTest();
     Data LoadMnistData();
 }

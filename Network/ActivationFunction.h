@@ -12,8 +12,8 @@ namespace neural_network {
 
     public:
         ActivationFunction(FunctionRtoR f1, FunctionRtoR f2);
-        Matrix Apply(const Matrix &x) const;
-        Matrix Derivative(const Matrix &x) const;
+        Matrix apply(const Matrix &x) const;
+        Matrix derivative(const Matrix &x) const;
 
     private:
         FunctionRtoR apply_;
