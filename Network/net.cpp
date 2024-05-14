@@ -37,7 +37,7 @@ namespace neural_network {
         return ForwardPropagation(x);
     }
 
-    Vector Network::ForwardPropagation(const Matrix &batch_input) {
+    Matrix Network::ForwardPropagation(const Matrix &batch_input) {
         Matrix output = batch_input;
         for (Layer &layer: layers_) {
             output = layer.Result(output);
@@ -48,16 +48,15 @@ namespace neural_network {
     void Network::BackPropagation(const Matrix &output, const Matrix &batch_output,
                                   int epoch, int power_learning_rate, const LossFunction &lf) {
         Matrix u = lf.Derivative(output, batch_output);
-        for (int j = layers_.size() - 1; j >= 0; --j) {
-            Matrix der_A = layers_[j].MakeDerA(output, u);
-            Matrix der_b = layers_[j].MakeDerB(output, u);
+        for (int i = layers_.size() - 1; i >= 0; --i) {
+            Matrix der_A = layers_[i].MakeDerA(output, u);
+            Matrix der_b = layers_[i].MakeDerB(output, u);
             double learning_rate = 1.0 / (1 + std::pow(epoch, power_learning_rate));
-            layers_[j].ChangeA(der_A, learning_rate);
-            layers_[j].ChangeB(der_b, learning_rate);
-            if (j > 0) {
-                u = layers_[j].PushU(output, u);
+            layers_[i].ChangeA(der_A, learning_rate);
+            layers_[i].ChangeB(der_b, learning_rate);
+            if (i > 0) {
+                u = layers_[i].PushU(output, u);
             }
         }
-
     }
 }

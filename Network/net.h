@@ -19,7 +19,7 @@ namespace neural_network {
         Vector Predict(const Matrix &x);
 
     private:
-        Vector ForwardPropagation(const Matrix &batch_input);
+        Matrix ForwardPropagation(const Matrix &batch_input);
         void BackPropagation(const Matrix &output, const Matrix &batch_output, int epoch, int power_learning_rate,
                              const LossFunction &lf);
 

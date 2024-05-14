@@ -12,20 +12,20 @@ namespace neural_network {
         return der_(x, y);
     }
 
-    double LossFunction::Dist(const Vector &x, const Matrix &y) const {
+    double LossFunction::Dist(const Matrix &x, const Matrix &y) const {
         double ret = 0;
         for (Index i = 0; i < y.cols(); ++i) {
-            ret += dist_(x, y.col(i));
+            ret += dist_(x.col(i), y.col(i));
         }
         return ret / y.cols();
     }
 
-    Matrix LossFunction::Derivative(const Vector &x, const Matrix &y) const {
-        Matrix ret = Matrix::Zero(x.size(), x.size());
+    Matrix LossFunction::Derivative(const Matrix &x, const Matrix &y) const {
+        Matrix ret = Matrix::Zero(x.rows(), x.cols());
         for (Index i = 0; i < y.cols(); ++i) {
-            ret += der_(x, y.col(i));
+            ret.col(i) = der_(x.col(i), y.col(i));
         }
-        return ret / y.cols();
+        return ret.rowwise().mean();
     }
 
     double MSE::Dist(const Vector &x, const Vector &y) {

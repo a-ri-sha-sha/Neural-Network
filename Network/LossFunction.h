@@ -15,8 +15,8 @@ namespace neural_network {
         double Dist(const Vector &x, const Vector &y) const;
         Matrix Derivative(const Vector &x, const Vector &y) const;
 
-        double Dist(const Vector &x, const Matrix &y) const;
-        Matrix Derivative(const Vector &x, const Matrix &y) const;
+        double Dist(const Matrix &x, const Matrix &y) const;
+        Matrix Derivative(const Matrix &x, const Matrix &y) const;
 
     private:
         FuncVectToR dist_;

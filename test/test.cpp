@@ -1,5 +1,6 @@
 #include "test.h"
 #include "../mnist/include/mnist/mnist_reader.hpp"
+#include <iostream>
 
 namespace mnist_test {
     void RunAllTest() {
@@ -14,7 +15,7 @@ namespace mnist_test {
         const auto& labels = dataset.training_labels;
 
         size_t num_samples = images.size();
-        size_t image_size = images[0].size(); // 28x28 = 784
+        size_t image_size = images[0].size();
 
         Eigen::MatrixXd input(image_size, num_samples);
         Eigen::MatrixXd output(10, num_samples);
@@ -29,7 +30,6 @@ namespace mnist_test {
         for (size_t i = 0; i < num_samples; ++i) {
             output(labels[i], i) = 1.0;
         }
-
         return {input, output};
     }
 }
