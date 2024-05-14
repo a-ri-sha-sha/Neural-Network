@@ -3,9 +3,9 @@
 
 namespace mnist_test {
     void RunAllTest() {
-        neural_network::ActivationFunction f1([](double x) {return 1 / (1 + exp(-x));}, [](double x){return 5*x;});
-//        Network network({10, 5}, {neural_network::Sigmoid()}, 0.99);
-//        Data data = LoadMnistData();
+        Data data = LoadMnistData();
+        Network network({data.input.rows(), 128, data.output.rows()}, {neural_network::Sigmoid(), neural_network::ReLu()}, 0.99);
+        network.Train(data, 2, 0.001, 64, neural_network::MSE(), 1);
     }
 
     Data LoadMnistData() {

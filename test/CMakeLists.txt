@@ -8,5 +8,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(Tests main.cpp test.cpp)
 find_package(Eigen3)
 target_link_libraries(Tests Eigen3::Eigen)
-
-
+target_link_libraries(Tests ${PROJECT_NAME})
