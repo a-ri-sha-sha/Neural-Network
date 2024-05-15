@@ -1,4 +1,5 @@
 #include "Layer.h"
+#include <iostream>
 
 namespace layer {
     Layer::Layer(ActivationFunction sigma, Index input, Index output, double normalize) : sigma_(
@@ -24,8 +25,9 @@ namespace layer {
     }
 
     Matrix Layer::MakeDerA(const Matrix &x, const Matrix &u) const {
-        return (sigma_.Derivative((A_ * x).colwise() + b_).array() * u.transpose().array()).matrix() * x.transpose() /
-               u.rows();
+        std::cout << sigma_.Derivative((A_ * x).colwise() + b_).rows() << ' '
+                  << sigma_.Derivative((A_ * x).colwise() + b_).cols() << '\n';
+        return (sigma_.Derivative((A_ * x).colwise() + b_) * u.transpose() * x.transpose()) / u.rows();
     }
 
     Vector Layer::MakeDerB(const Matrix &x, const Matrix &u) const {

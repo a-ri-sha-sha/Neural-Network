@@ -1,6 +1,6 @@
 
 find_package(Eigen3)
-add_library(${PROJECT_NAME} net.cpp ActivationFunction.cpp LossFunction.cpp Layer.cpp Except.cpp)
+add_library(${PROJECT_NAME} net.cpp ActivationFunction.cpp LossFunction.cpp Layer.cpp)
 target_link_libraries(${PROJECT_NAME} Eigen3::Eigen)
 
 set(CMAKE_CXX_STANDARD 17)

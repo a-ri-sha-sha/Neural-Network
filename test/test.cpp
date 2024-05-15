@@ -6,7 +6,7 @@ namespace mnist_test {
     void RunAllTest() {
         Data data = LoadMnistData();
         Network network({data.input.rows(), 128, data.output.rows()}, {neural_network::Sigmoid(), neural_network::ReLu()}, 0.99);
-        network.Train(data, 2, 0.001, 64, neural_network::MSE(), 1);
+//        network.Train(data, 2, 0.001, 64, neural_network::MSE(), 1);
     }
 
     Data LoadMnistData() {

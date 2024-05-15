@@ -19,8 +19,8 @@ namespace neural_network {
         Vector Predict(const Matrix &x);
 
     private:
-        Matrix ForwardPropagation(const Matrix &batch_input);
-        void BackPropagation(const Matrix &output, const Matrix &batch_output, int epoch, int power_learning_rate,
+        Matrix ForwardPropagation(const Matrix &batch_input, std::vector<Matrix> &before_propagation);
+        void BackPropagation(const Matrix &output, const Matrix &batch_output, const std::vector<Matrix> &before_propagation, int epoch, int power_learning_rate,
                              const LossFunction &lf);
 
     private:

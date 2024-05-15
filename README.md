@@ -55,3 +55,15 @@ Vector Predict(const Matrix &x);
 2. Система поддержки версий: Git 2.34.
 3. Библиотеки: Eigen 3.4.0, EigenRand
 ## Пример использования
+```cpp
+#include "Network/net.h"
+
+int main() {
+    Data data = LoadData();
+    Network network({data.input.rows(), 128, data.output.rows()}, {neural_network::Sigmoid(), neural_network::ReLu()}, 0.99);
+    network.Train(data, 2, 0.001, 64, neural_network::MSE(), 1);
+    Vector x = data.input.col(0);
+    std::cout << network.predict(x);
+}
+
+```
